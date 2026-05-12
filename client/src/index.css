@@ -1,0 +1,77 @@
+body {
+  margin: 0;
+  font-family: "Segoe UI", sans-serif;
+  background: #f1f3f4;
+}
+
+.main-title {
+  text-align: center;
+  margin-top: 20px;
+  color: #333;
+}
+
+.app-layout {
+  max-width: 900px;
+  margin: auto;
+  padding: 20px;
+}
+
+.note-input {
+  background: white;
+  padding: 15px;
+  border-radius: 10px;
+  margin-bottom: 20px;
+  box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+}
+
+.note-input input {
+  width: 100%;
+  border: none;
+  padding: 10px;
+  margin-bottom: 8px;
+  outline: none;
+}
+
+.note-input button {
+  background: #fbbc04;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.notes-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 15px;
+}
+
+.note-card {
+  padding: 15px;
+  border-radius: 10px;
+  background: #fff475;
+  box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+  transition: 0.2s;
+}
+
+.note-card:hover {
+  transform: scale(1.03);
+}
+
+.note-card:nth-child(2n) { background: #f28b82; }
+.note-card:nth-child(3n) { background: #ccff90; }
+.note-card:nth-child(4n) { background: #a7ffeb; }
+
+.actions {
+  margin-top: 10px;
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
+.actions button {
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  font-size: 16px;
+}
