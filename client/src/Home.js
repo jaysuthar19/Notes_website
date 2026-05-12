@@ -13,7 +13,7 @@ const Home = () => {
   };
 
   useEffect(() => {
-    fetch("http://localhost:5000/notes")
+    fetch("https://notes-website-eu94.onrender.com/notes")
       .then(res => res.json())
       .then(data => setNotes(data));
   }, []);
@@ -22,8 +22,8 @@ const Home = () => {
     if (!text || !title) return;
 
     const url = editId
-      ? `http://localhost:5000/notes/${editId}`
-      : "http://localhost:5000/notes";
+  ? `https://notes-website-eu94.onrender.com/notes/${editId}`
+  : "https://notes-website-eu94.onrender.com/notes";
 
     const method = editId ? "PUT" : "POST";
 
@@ -47,7 +47,7 @@ const Home = () => {
   };
 
   const handleDelete = (id) => {
-    fetch(`http://localhost:5000/notes/${id}`, {
+    fetch(`https://notes-website-eu94.onrender.com/notes/${id}`, {
       method: "DELETE"
     }).then(() => {
       setNotes(notes.filter(note => note._id !== id));
