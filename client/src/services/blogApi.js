@@ -3,6 +3,11 @@ import API from "./api";
 // GET BLOGS
 export const getBlogs = async () => {
   const res = await fetch(`${API}/api/blogs`);
+
+  if (!res.ok) {
+    throw new Error("Failed to fetch blogs");
+  }
+
   return res.json();
 };
 
@@ -16,14 +21,22 @@ export const createBlog = async (blogData) => {
     body: JSON.stringify(blogData)
   });
 
+  if (!res.ok) {
+    throw new Error("Failed to create blog");
+  }
+
   return res.json();
 };
 
 // DELETE BLOG
 export const deleteBlog = async (id) => {
-  await fetch(`${API}/api/blogs/${id}`, {
+  const res = await fetch(`${API}/api/blogs/${id}`, {
     method: "DELETE"
   });
+
+  if (!res.ok) {
+    throw new Error("Failed to delete blog");
+  }
 };
 
 // UPDATE BLOG
@@ -35,6 +48,10 @@ export const updateBlog = async (id, updatedData) => {
     },
     body: JSON.stringify(updatedData)
   });
+
+  if (!res.ok) {
+    throw new Error("Failed to update blog");
+  }
 
   return res.json();
 };
