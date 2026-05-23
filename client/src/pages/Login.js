@@ -2,10 +2,10 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
 import { useAuth } from "../context/AuthContext";
+import API from "../services/api";
 
 const Login = () => {
   const navigate = useNavigate();
-
   const { login } = useAuth();
 
   const [formData, setFormData] = useState({
@@ -24,16 +24,13 @@ const Login = () => {
     e.preventDefault();
 
     try {
-      const res = await fetch(
-        "http://localhost:5000/api/auth/login",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json"
-          },
-          body: JSON.stringify(formData)
-        }
-      );
+      const res = await fetch(`${API}/api/auth/login`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(formData)
+      });
 
       const data = await res.json();
 
@@ -42,7 +39,6 @@ const Login = () => {
       }
 
       login(data);
-
       navigate("/");
     } catch (err) {
       alert(err.message);
@@ -51,12 +47,7 @@ const Login = () => {
 
   return (
     <div className="auth-page">
-
-      <form
-        className="auth-form"
-        onSubmit={handleSubmit}
-      >
-
+      <form className="auth-form" onSubmit={handleSubmit}>
         <h1>Welcome Back</h1>
 
         <input
@@ -75,19 +66,13 @@ const Login = () => {
           onChange={handleChange}
         />
 
-        <button type="submit">
-          Login
-        </button>
+        <button type="submit">Login</button>
 
         <p>
           Don't have an account?{" "}
-          <Link to="/register">
-            Register
-          </Link>
+          <Link to="/register">Register</Link>
         </p>
-
       </form>
-
     </div>
   );
 };

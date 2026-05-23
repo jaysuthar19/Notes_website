@@ -2,10 +2,10 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
 import { useAuth } from "../context/AuthContext";
+import API from "../services/api";
 
 const Register = () => {
   const navigate = useNavigate();
-
   const { login } = useAuth();
 
   const [formData, setFormData] = useState({
@@ -25,16 +25,13 @@ const Register = () => {
     e.preventDefault();
 
     try {
-      const res = await fetch(
-        "http://localhost:5000/api/auth/register",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json"
-          },
-          body: JSON.stringify(formData)
-        }
-      );
+      const res = await fetch(`${API}/api/auth/register`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(formData)
+      });
 
       const data = await res.json();
 
@@ -43,7 +40,6 @@ const Register = () => {
       }
 
       login(data);
-
       navigate("/");
     } catch (err) {
       alert(err.message);
@@ -52,12 +48,7 @@ const Register = () => {
 
   return (
     <div className="auth-page">
-
-      <form
-        className="auth-form"
-        onSubmit={handleSubmit}
-      >
-
+      <form className="auth-form" onSubmit={handleSubmit}>
         <h1>Create Account</h1>
 
         <input
@@ -84,19 +75,13 @@ const Register = () => {
           onChange={handleChange}
         />
 
-        <button type="submit">
-          Register
-        </button>
+        <button type="submit">Register</button>
 
         <p>
           Already have an account?{" "}
-          <Link to="/login">
-            Login
-          </Link>
+          <Link to="/login">Login</Link>
         </p>
-
       </form>
-
     </div>
   );
 };
