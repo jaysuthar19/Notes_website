@@ -3,79 +3,61 @@ require("dotenv").config();
 const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
-const Note = require("./models/Note");
+
+const blogRoutes = require("./routes/blogRoutes");
+const authRoutes = require("./routes/authRoutes");
+
+const {
+  notFound,
+  errorHandler
+} = require("./middleware/errorMiddleware");
 
 const app = express();
 
-// Middleware
-app.use(cors({
-  origin: "*"
-}));
+/* -------------------- MIDDLEWARE -------------------- */
+
+app.use(
+  cors({
+    origin: "*"
+  })
+);
+
 app.use(express.json());
 
-// MongoDB Connection
-mongoose.connect(process.env.MONGO_URI)
-  .then(() => console.log("MongoDB connected"))
-  .catch(err => console.log(err));
+/* -------------------- DATABASE -------------------- */
 
-// Routes
-app.get("/", (req, res) => {
-  res.send("Server working");
-});
-
-// GET all notes
-app.get("/notes", async (req, res) => {
-  const notes = await Note.find();
-  res.json(notes);
-});
-
-// CREATE note
-app.post("/notes", async (req, res) => {
-  try {
-    const note = new Note({
-      title: req.body.title,
-      text: req.body.text
-    });
-
-    await note.save();
-    res.json(note);
-  } catch (err) {
+mongoose
+  .connect(process.env.MONGO_URI)
+  .then(() => {
+    console.log("MongoDB Connected");
+  })
+  .catch((err) => {
     console.log(err);
-    res.status(500).json({ error: "Failed to save note" });
-  }
+  });
+
+/* -------------------- ROUTES -------------------- */
+
+app.get("/", (req, res) => {
+  res.send("API is running...");
 });
 
-// UPDATE note
-app.put("/notes/:id", async (req, res) => {
-  try {
-    const updatedNote = await Note.findByIdAndUpdate(
-      req.params.id,
-      {
-        title: req.body.title,
-        text: req.body.text
-      },
-      { new: true }
-    );
+app.use("/api/blogs", blogRoutes);
 
-    res.json(updatedNote);
-  } catch (err) {
-    res.status(500).json({ error: "Update failed" });
-  }
-});
+app.use("/api/auth", authRoutes);
 
-// DELETE note
-app.delete("/notes/:id", async (req, res) => {
-  try {
-    await Note.findByIdAndDelete(req.params.id);
-    res.json({ message: "Deleted" });
-  } catch (err) {
-    res.status(500).json({ error: "Delete failed" });
-  }
-});
+/* -------------------- ERROR MIDDLEWARE -------------------- */
 
-// Server Start
-const PORT = process.env.PORT || 5000;
+app.use(notFound);
+
+app.use(errorHandler);
+
+/* -------------------- SERVER -------------------- */
+
+const PORT =
+  process.env.PORT || 5000;
 
 app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
+  console.log(
+    `Server running on port ${PORT}`
+  );
 });
