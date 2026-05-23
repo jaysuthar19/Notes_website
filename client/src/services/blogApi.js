@@ -37,6 +37,9 @@ export const deleteBlog = async (id) => {
   if (!res.ok) {
     throw new Error("Failed to delete blog");
   }
+
+  // optional but clean
+  return res.json().catch(() => ({}));
 };
 
 // UPDATE BLOG
